@@ -1,0 +1,65 @@
+package mk.finki.ukim.eshop.service.domain.impl;
+
+import mk.finki.ukim.eshop.model.domain.Product;
+import mk.finki.ukim.eshop.repository.ProductRepository;
+import mk.finki.ukim.eshop.service.domain.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+    private final ProductRepository productRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    @Override
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    @Override
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
+    @Override
+    public Product create(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
+    public Optional<Product> update(Long id, Product product) {
+        return productRepository
+                .findById(id)
+                .map((existingProduct) -> {
+                    existingProduct.setName(product.getName());
+                    existingProduct.setDescription(product.getDescription());
+                    existingProduct.setPrice(product.getPrice());
+                    existingProduct.setQuantity(product.getQuantity());
+                    existingProduct.setCategory(product.getCategory());
+                    return productRepository.save(existingProduct);
+                });
+    }
+
+    @Override
+    public Optional<Product> deleteById(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        product.ifPresent(productRepository::delete);
+        return product;
+    }
+
+    @Override
+    public Page<Product> findAll(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return productRepository.findAll(pageable);
+    }
+
+}

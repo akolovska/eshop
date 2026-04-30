@@ -1,0 +1,8 @@
+package mk.finki.ukim.eshop.model.exception;
+
+public class ShoppingCartNotFoundException extends RuntimeException {
+    public ShoppingCartNotFoundException(Long id) {
+        super("A shopping cart with id %d does not exist.".formatted(id));
+    }
+}
+
