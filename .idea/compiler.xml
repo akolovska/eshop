@@ -12,6 +12,9 @@
         <module name="eshopbackend" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="eshop" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
